@@ -1,0 +1,56 @@
+encoding  iso8859-2
+survey man-a -title "survey-a-man" -entrance E0
+
+# Mangapū System, Waitomo
+    
+  centreline
+    
+    date 2018.6.1
+    team "Paul Rowe"
+    
+# Lat / long position for entrance
+   cs lat-long
+   fix E0 -36.78827 174.85487 133
+
+   units compass clino degrees
+
+# Survey station notes
+# Station E0 "Entrance"
+# Station E1 "Entrance"
+
+data normal from to length compass clino 
+             E0   1   4.68    87   -32.9 
+             1    2   5.66    64    -7.3
+             2    3   5.29    95    -6.5
+             3    4   6.00   102    -4.2
+			 4    5   5.7    103    -2.0
+			 5    6   2.4     94    -0.2
+			 6    7   2.4    110     0
+			 
+#			 E0   A1  3.39     60  12.0     Back bearing
+			 E0   A1  3.39    240  -12.0
+			 A1   E1  1.58    187   27
+			 E1   A2  3.3     285   11
+
+# LRUD data for each station
+
+data dimensions station left right   up   down
+             E0     0.3   0.3   0     0.87
+             1      0.93  1.11  1.17  0.1
+             2      1.73  2.18  1.52  0.2 
+             3      2.32  2.3   1.2   0.2
+			 4      1.2   1.6   0.7   0.0
+			 5      0.5   1.55  0.52  0.0
+			 6      0.6   0.9   0.32  0
+			 
+			 A1   	0.93  0.55  0.3  0.3
+			 E1   	0.6   0.55  0.92  0.3
+			 A2     0.5   0.5   0.2   0.2
+           
+
+# elevation details
+# extend start 1
+  endcentreline
+  
+endsurvey man-a
+

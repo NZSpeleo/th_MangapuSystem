@@ -1,0 +1,72 @@
+survey lw -title "The Lost World, Mangapu System"
+
+   input survey-a-lw.th
+   input survey-surface-lw.th
+   
+#   input ..\survey-overland-man.th
+   
+   centerline
+ 
+	equate  50@lw-a  50@lw-surface  # large white boulder in streambed below pitch
+#	equate 179@lw-a  1@man-overland
+ 
+   endcenterline
+  
+endsurvey
+
+#join elevation scraps
+join lw-pitch-east-wall:0 lw-sump-ceiling:end
+join lw-pitch-base-floor:0 lw-downstream-floor:end
+join lw-elev-canal-downstream-ceiling:0 lw-elev-lost-world-debris-slope-ceiling:end
+join lw-elev-canal-end-floor:end lw-elev-lost-world-debris-slope-floor:0
+join lw-cow-hole-upstream-floor:0 lw-cow-hole-floor:end
+join lw-cow-hole-upstream-ceiling:0 lw-cow-hole-pitch-west-ceiling:end
+join lw-streamway-1-floor:0 lw-cow-hole-upstream-floor:end
+join lw-streamway-1-ceiling:0 lw-cow-hole-upstream-2-ceiling:end
+
+#join plan scraps
+join lw-pitch-base-west-wall:0 lw-sump-west-wall:0
+join lw-pitch-base-east-wall:end lw-sump-east-wall:end
+join lw-spider-hole-ladder-west-wall:0 lw-pitch-base-west-wall:end
+join lw-spider-hole-ladder-east-wall:end lw-pitch-base-east-wall:0
+join lw-canal-upstream-east-wall:0 lw-streamway-east-wall:end
+join lw-canal-upstream-west-wall:end lw-streamway-west-wall:end:0
+join lw-submergence-west-wall:0 lw-streamway-west-wall:end
+join lw-submergence-east-wall:end lw-streamway-east-wall:0
+join lw-submergence-ceiling:0 lw-nemesis-junction-ceiling:end
+join lw-submergence-floor:end lw-streamway-1-floor:end
+
+map m-lw-surface
+	lw-plan-lost-world-pitch-head-1
+	lw-plan-cow-hole
+endmap
+
+map m-lw-surface-abseil-platform
+	lw-plan-lost-world-pitch-head-2
+endmap
+
+map m-lw-stream
+	lw-plan-sump
+	lw-plan-pitch-base-a
+	lw-plan-canals
+	lw-plan-streamway
+	lw-plan-submergence
+endmap
+
+map m-lw-elev
+   lw-elev-lost-world-submergence
+   lw-elev-lost-world-streamway
+   lw-elev-lost-world-canals-2
+   lw-elev-lost-world-canals
+   lw-elev-lost-world-pitch
+   lw-elev-sump
+endmap
+
+map m-lw-complete
+  m-lw-stream
+  break
+  m-lw-surface [0 0 m] above
+  break
+  m-lw-surface-abseil-platform [135 5 m] above
+#  m-lw-surface-abseil-platform [37 -4 m] above
+endmap

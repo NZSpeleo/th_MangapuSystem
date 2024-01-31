@@ -1,0 +1,16 @@
+encoding  utf-8
+source index-lost-world-upper.th
+source plan-lost-world-pitch-head-lw.th2
+
+#!PROCESS
+#!TITLE Lost World to submergence, Mangapu System, Waitomo
+
+input std-files/layout-standards.thc
+input layout-lost-world.thc
+
+select m-upper
+
+export map -o sketches\lost-world-upper.xvi -layout-scale 1 100
+
+
+

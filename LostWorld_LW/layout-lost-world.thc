@@ -1,0 +1,137 @@
+encoding  utf-8
+
+#FILENAME: layout-lost-world.thc
+# Paul Rowe - Map specific layout options
+# 18 Dec 2023
+
+layout layout-lost-world
+	title "Lost World to submergence, Mangapu System"
+	#scale-bar 20 metres 
+
+	copy layout-standards
+	
+#	color map-fg altitude
+	color map-fg altitude:manualrainbow
+	opacity 25
+
+	statistics explo-length on
+
+# Symbols: Show/hide/alter
+#-------------------------
+
+	symbol-hide group cave-centerline     #1. hides all centrelines, incl station-names - clears the canvas
+	symbol-hide point station
+
+	# symbol-show point cave-station  #2. set up for identifying cave-stations to show/hide
+	# symbol-show point station:fixed #3. actually show/hide (cave-)stations of mark ...
+	# symbol-show point station:painted #3. 
+	# symbol-show point station:natural #3.
+	# symbol-hide point station:temporary #3.
+	# symbol-hide special north-arrow
+	# symbol-hide special scale-bar
+	# symbol-show line arrow
+
+	code metapost
+	
+		% Paul Rowe - modified from Scalebar 2 from Thomas Holder. Distributed under the GNU General Public License.
+		def s_scalebar (expr l, units, txt) =
+			begingroup
+				interim warningcheck:=0;
+				tmpl:=l / Scale * cm * units / 2;
+				tmpx:=l / Scale * cm * units / 5;
+				tmph:=5bp; % bar height
+			endgroup;
+			pickup PenC;
+			draw (-tmpl,0)--(tmpl,0)--(tmpl,-tmph)--(-tmpl,-tmph)--cycle;
+			p:=(0,0)--(tmpx,0)--(tmpx,-tmph)--(0,-tmph)--cycle;
+			for i:=-2.5 step 2 until 2:
+				fill p shifted (i * tmpx,0);
+			endfor;
+			begingroup
+			    % PJR. increase gap between bar and text below from 3.5bp to 6bp
+				interim labeloffset:=6bp;
+				for i:=0 step (l/5) until (l-1):
+					tmpx:=tmpl * (i * 2 / l - 1);
+					% PJR Add 'scaled 1.2' to increase number size
+					label.bot(thTEX(decimal (i)) scaled 1.2,(tmpx,-tmph));
+				endfor;
+				% PJR. Add 'scaled 1.2' to increase number size
+				label.bot(thTEX(decimal (l) & "\thinspace" & txt)  scaled 1.2,(tmpl,-tmph));
+				
+				% PJR. Hide scale text above scalebar
+				% label.top(thTEX("Scale 1 : " & decimal round(Scale*100)),(0,0));
+			endgroup;
+		enddef;
+	endcode
+endlayout layout-lost-world
+
+layout layout-lost-world-plan-mag-north
+# rotate map back to mag north as at Dec 2023
+	rotate -21.1
+
+endlayout
+
+layout layout-lost-world-plan
+	scale 1 500
+	rotate 47
+
+#	code tex-map
+#		\def\maplayout{
+#			\legendbox{100}{100}{NW}{\northarrow}
+#			\legendbox{60}{90}{NW}{\size[20]\the\cavelengthtitle:  \the\cavelength}
+#			\legendbox{80}{90}{NW}{\scalebar}
+
+#			\legendtextsize={\size[12]}  % set font size
+#			\legendwidth 10 cm           % set width of the legend
+#			\hsize=\legendwidth
+#			\legendbox{300}{50}{NW}{\formattedlegend}
+#		}
+endlayout layout-lost-world-plan
+
+layout layout-lost-world-elev
+	code tex-map
+		\def\maplayout{
+			\legendbox{92}{95}{NW}{\northarrow}
+# something odd happening where page width blows out if cavelength or formattedlengend are included?
+#			\legendbox{60}{60}{NW}{\size[20]\the\cavelengthtitle:  \the\cavelength  \size[20]\the\cavedepthtitle:  \the\cavedepth}
+			\legendbox{70}{81}{NW}{\scalebar}
+
+			\legendtextsize={\size[14]}  % set font size
+#			\legendtextheadersize={\size[18]}
+#			\legendwidth=12cm           % set width of the legend
+#			\hsize=\legendwidth
+#			\legendbox{90}{60}{NW}{\formattedlegend}
+			\legendwidth=4cm           % set width of the legend
+
+			\legendbox{68}{63}{NW} {\loadpicture{sketches/legend.pdf}} % insert image. default map image command will not work.
+			\legendbox{4}{10}{NW} {\loadpicture{outputs/base-project-elev.pdf}}  % insert image. default map image command will not work.
+		}
+
+endlayout layout-lost-world-plan-elev
+
+layout layout-lost-world-elevation
+	symbol-hide group cave-centerline     #1. hides all centrelines, incl station-names - clears the canvas
+	map-header 10 10 nw
+	scale 1 500
+
+endlayout layout-lost-world-elevation
+
+
+layout layout-lost-world-elevation-raw
+# used to output just the sketch for embedding within a Plan PDF.
+	copy layout-standards
+	symbol-hide group cave-centerline     #1. hides all centrelines, incl station-names - clears the canvas
+	map-header 0 0 off
+	scale 1 500
+	color map-fg map:lw-elev
+	color map-fg altitude:manualrainbow
+	opacity 25
+#	smooth-shading quick
+
+endlayout layout-lost-world-elevation-raw
+
+#text en "area debris"    "debris"
+
+
+
+

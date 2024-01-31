@@ -1,0 +1,18 @@
+encoding  utf-8
+source index-lost-world-lower.th
+source plan-lost-world-pitch-base-lw.th2
+source plan-upstream-1-lw.th2
+source plan-upstream-2-lw.th2
+source plan-upstream-3-lw.th2
+
+#!PROCESS
+#!TITLE Lost World to submergence, Mangapu System, Waitomo
+
+input std-files/layout-standards.thc
+input layout-lost-world.thc
+
+select m-lower
+export map -o sketches\lost-world-lower.xvi -layout-scale 1 166.67
+
+
+

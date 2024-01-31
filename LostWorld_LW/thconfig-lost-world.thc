@@ -1,0 +1,66 @@
+#!PROCESS
+#!TITLE Lost World to submergence, Mangapu System, Waitomo
+
+input std-files/layout-standards.thc
+input layout-lost-world.thc
+
+encoding  utf-8
+source index-lost-world.th
+
+source plan-lost-world-pitch-head-lw.th2
+source plan-lost-world-sump-lw.th2
+source plan-lost-world-pitch-base-a-lw.th2
+source plan-lost-world-canals-lw.th2
+source plan-lost-world-streamway-lw.th2
+source plan-lost-world-submergence-lw.th2
+source elev-lost-world-sump-lw.th2
+source elev-lost-world-pitch-base-lw.th2
+source elev-lost-world-canals-lw.th2
+source elev-lost-world-canals-2-lw.th2
+source elev-lost-world-streamway-lw.th2
+source elev-lost-world-submergence-lw.th2
+
+lookup altitude:manualrainbow
+  150 [100 64 25]
+  140 [100 83 0]
+  130 [87 97 18]
+  120 [64 95 33]
+  110 [31 97 80]
+  100 [4 93 100]
+  90  [6 71 98]
+  80  [8 49 96]
+  70  [45 35 95]
+  60  [54 23 87]
+endlookup
+
+select m-lw-elev
+
+export map -projection [elevation 317] -output outputs\lost-world-elev.pdf \ 
+	-layout layout-lost-world \
+	-layout layout-lost-world-elevation-raw 
+
+select m-lw-complete
+
+#export map -o sketches\lost-world.xvi -layout-scale 1 100
+
+#export map -projection [elevation 317] -o sketches\lost-world-elev.xvi -layout-scale 1 100
+
+export map -projection plan -output outputs\lost-world-plan.pdf \
+	-layout layout-lost-world \
+	-layout layout-lost-world-plan \
+	-layout layout-map-border
+
+#export map -projection plan -output outputs\lost-world-plan-mag-north.pdf \
+#	-layout layout-lost-world \
+#	-layout layout-lost-world-plan \
+#	-layout layout-lost-world-plan-mag-north \
+#	-layout layout-map-border
+	
+#export map -projection plan -output outputs\lost-world-plan-elev.pdf \
+#	-layout layout-lost-world \
+#	-layout layout-lost-world-plan-elev \
+#	-layout layout-map-border
+	
+# export model -format kml -output outputs\lost-world-gis.kml
+
+

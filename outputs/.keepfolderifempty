@@ -1,0 +1,6 @@
+# Filename: .keepfolderifempty
+# Bruce Mutton Dec2021
+
+# When using git, keep this file's parent folder, even if it is empty (except for this file)
+# Contents of this folder will be versioned in accordance with .gitignore patterns
+# END

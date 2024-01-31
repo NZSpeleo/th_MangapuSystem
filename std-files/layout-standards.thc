@@ -1,0 +1,239 @@
+encoding  utf-8
+
+#FILENAME: layout-standards.thc
+# Paul Rowe - standard layout options
+# 7 Aug 2023
+#
+# Revision history
+# 16 Aug 2023 - override l_chimney_NZSS to use larger dots, added tab formatting
+
+layout layout-standards
+	language en_UK  # English, UK only changes line pit to pitch (from pit), more like NZ usage
+
+	#PAGE LAYOUT
+	rotate  00           # map orientation on page
+	legend on
+	scale 1 200
+	north true
+	page-setup 21 29.7 18 26.7 1.5 1.5 cm
+	
+	#CAVE APPEARANCE
+	symbol-set NZSS
+
+	#Adopt passage slope 'fat triangle arrows' in favour of default skinny arrows
+	symbol-assign line gradient BCRA
+	symbol-assign point gradient BCRA
+  
+	# Symbol colours
+  
+	symbol-color point breakdown-choke [15 16 32]
+	symbol-color point stalagmite [44 32 0]
+	symbol-color point stalactite [44 32 0]
+	symbol-color point stalagmites [44 32 0]
+	symbol-color point stalactites [44 32 0]
+	symbol-color point soda-straw [44 32 0]
+	symbol-color line wall [15 16 32]
+	symbol-color line chimney [15 16 32]
+	symbol-color line pitch [15 16 32]
+	symbol-color line rock-border [34 19 18]
+	symbol-color line border [34 19 18]
+	symbol-color line u:doline [34 19 18]
+	symbol-color line floor-step [34 19 18]
+	symbol-color line floor-meander [34 19 18]
+	symbol-color area flowstone [44 32 0]
+	symbol-color area debris [34 19 18]
+	symbol-color area blocks [34 19 18]
+	symbol-color area pebbles [34 19 18]
+	symbol-color area clay [34 19 18]
+	symbol-color area sand [34 19 18]
+	symbol-color area water [12 35 71]
+	symbol-color line water-flow [12 35 71]
+	symbol-color area sump [12 35 71]
+	  
+	color map-fg [93 89 77]
+	opacity 85
+
+
+	code metapost
+		%Bruce Mutton 2012.06.10 uses general code for l_pit_UIS defined in therion source code by Martin Budaj 5.3.9
+		% dots on righthand (rock) side of line spaced 0.2u, 0.2u same as floor-step ticks
+		%Paul Rowe - modified to use thickest pen for dots to make them more visible
+		def l_chimney_NZSS (expr P) =
+			T:=identity;
+			cas := 0;                            % cursor to step along path
+			dlzka := arclength P;
+			mojkrok:=adjust_step(dlzka, 0.25u);  % symbol length nudged to be multiple of path length
+			q:= (0.20u,-0.20u) -- (0.21u,-0.21u);         % dot
+
+			pickup PenA;  %thickest pen
+			forever:
+			  t := arctime cas of P;
+			thdraw q rotated angle(thdir(P,t)) shifted (point t of P ); % draw dots
+			cas := cas + mojkrok;
+			  exitif cas > dlzka + (mojkrok / 3); % for rounding errors
+			endfor;
+			pickup PenB;   %2nd thickest pen
+			thdraw P;      %continuous line
+		enddef;
+
+		%Bruce Mutton 2010.06.20 for Therion 5.3.8
+		def l_wall_unsurveyed (expr P) = 
+			T:=identity;
+			pickup PenC;
+			thdraw P dashed evenly scaled (2*optical_zoom);
+		enddef;
+		
+		% Paul Rowe 2023.08.19  Modified version of 'North Arrow 2' from Thomas Holder. Distributed under the GNU General Public License.
+		def s_northarrow (expr rot) =
+			begingroup
+				interim defaultscale:=0.7; % scale your north arrow here
+				T:=identity scaled defaultscale rotated -rot;
+				interim linecap:=squared;
+				interim linejoin:=rounded;
+				thfill (-.5cm,-.1cm)--(0,2.8cm)--(.5cm,-.1cm)--cycle;
+				pickup pencircle scaled (0.08cm * defaultscale);
+				thdraw (0,0)--(0,-2.5cm);
+				pickup pencircle scaled (0.16cm * defaultscale);
+				p:=(0.4cm,0.6cm);
+				thdraw ((p--(p yscaled -1)--(p xscaled -1)--(p scaled -1)) shifted (0,-1.4cm));
+				label.rt(thTEX("true") scaled 1.6, (0.7cm,-1.9cm)) transformed T;
+			endgroup;
+		enddef;
+		
+		# Custom points for person walking / climbing. From Juraj Halama.
+		picture u_man_c_pic;
+		u_man_c_pic := image (
+			draw (0cm, -0cm) -- (-8cm, 27cm) -- (-36cm, 55cm) -- (-50cm, 99cm) withpen pencircle scaled 16cm;
+			draw (27cm, 48cm) -- (0, 64cm) -- (-29cm, 61cm) -- (-38cm, 102cm)  withpen pencircle scaled 16cm;
+			draw (-65cm, 48cm) -- (-75cm, 75cm) -- (-53cm, 106cm) -- (0, 106cm) withpen pencircle scaled 14cm;
+			draw (-44cm, 130cm) withpen pencircle scaled 27cm withcolor black;
+		) shifted (20cm, -67cm);
+
+		picture u_man_w_pic;
+			u_man_w_pic := image (
+			draw (0, 0) -- (7.5cm, 36cm) -- (0cm, 69cm) -- (9cm, 99cm) withpen pencircle scaled 16cm;
+			draw (42cm, 9cm) -- (37.5cm, 42cm) -- (13.5cm, 69cm) -- (30cm, 102cm) withpen pencircle scaled 16cm;
+			draw (21.5cm, 100.5cm) -- (6.6cm, 69cm) withpen pencircle scaled 16cm;
+			draw (-24cm, 75cm) -- (-13.5cm, 102cm) -- (9cm, 112.5cm) -- (30cm, 108cm) -- (51cm, 87cm) -- (75cm, 93cm) withpen pencircle scaled 14cm;
+			draw (30cm, 132cm) withpen pencircle scaled 27cm withcolor black;
+		) shifted (-20cm, -70cm);
+
+		def p_u_man_c (expr P, R, S, A) =
+			U := (60cm, 85cm) scaled (0.01 / Scale);
+			T:=identity aligned A rotated R scaled S shifted P;
+			thdraw u_man_c_pic scaled (0.01 / Scale);
+		enddef;
+
+		def p_u_man_w (expr P, R, S, A) =
+			U := (60cm, 80cm) scaled (0.01 / Scale);
+			T:=identity aligned A rotated R scaled S shifted P;
+			thdraw u_man_w_pic scaled (0.01 / Scale);
+		enddef;
+
+		def p_u_man_c_legend =
+			draw u_man_c_pic scaled (u / 175cm) shifted ((.5, .5) inscale);
+		enddef;
+
+		def p_u_man_w_legend =
+			draw u_man_w_pic scaled (u / 175cm) shifted ((.5, .5) inscale);
+		enddef;
+		
+		# Custom doline outline. From Dave Clucas, 2014.
+		def l_u_doline (expr P) =
+			T:=identity;
+			laenge:= arclength P;
+			symsize:=adjust_step(laenge,2u);
+			triangle_width:=symsize/10;
+			cur:=(symsize-triangle_width)/2;
+			pickup PenC;
+			forever:
+				t1 := arctime (cur) of P;
+				t  := arctime (cur + triangle_width/2) of P;
+				t2 := arctime (cur + triangle_width) of P;
+				thfill (subpath (t1,t2) of P) -- 
+				((point t of P) + symsize/2 * unitvector(thdir(P,t) rotated 90)) -- 
+				cycle;
+				thdraw (point t2 of P) --((point t of P) + symsize/2 * unitvector(thdir(P,t) rotated 90)) -- 
+				(point t1 of P) withcolor (0.5, 0, 0);
+				cur := cur + symsize;
+			exitif cur > laenge - (1*symsize/3); % for rounding errors
+				t1:=arctime (cur) of P;
+			endfor;
+		enddef;
+	endcode
+
+endlayout layout-standards
+
+
+#CODE TO PUT BORDER AROUND MAP
+#-----------------------------
+layout layout-map-border
+	code tex-map
+		\framethickness=0.25mm
+		
+endlayout layout-map-border
+
+#CODE TO MAKE WATER LOOK BLUE
+#----------------------------
+#remove this layout in due course RBM 2011.06.24
+
+layout water-blue  # Make water look blue
+	code metapost
+		def a_water (expr p) =
+			T:=identity;
+			thfill p withcolor (0.86, 1.0, 1.0);  
+		enddef;
+	endcode  
+endlayout water-blue
+
+#CODE TO MAKE SUMP LOOK BLUE
+#----------------------------
+#remove this layout in due course RBM 2011.06.24
+layout sump-blue  # Make sump look blue
+	code metapost
+		def a_sump (expr p) =
+		T:=identity;
+		thfill p withcolor (0.22, 0.22, 0.95);
+	enddef;
+	endcode  
+endlayout sump-blue
+
+
+#REDINFED BUILT-IN PHRASES - original source Bruce Mutton
+#5.3.10# text en "line arrow"             ""   #no point in labelling these
+#5.3.10# text en "point no-equipment"     "no equipment"
+#5.3.10# ext en "point raft"             "calcite raft"
+text en "point water"            "water, small pool"
+#5.3.10# text en "point water-flow:paleo" "paleo water flow (scallops)"
+text en "point paleo-material"   "paleo material, bones"
+text en "point archeo-material"  "archaeological material"
+#5.3.10# text en "line ceiling-step"      "ceiling step"
+#5.3.10# text en "point height"           "floor step/chimney/pit height/depth"
+#5.3.10# text en "point height:unsigned"  "floor step height"
+#5.3.10# text en "point clay-choke"       "clay/mud choke"
+#5.3.10# text en "point passage-height:both" "height above, depth below water"
+text en "point passage-height:unsigned" "passage height" # suggestion for future 5.3.12 adding to en-nz/NZSS sybmbol set Sep2013 (matches current default)
+text en "point passage-height:negative" "water depth" # suggestion for future 5.3.12 adding to en-nz/NZSS sybmbol set Sep2013
+text en "point passage-height:positive" "air space" # suggestion for future 5.3.12 adding to en-nz/NZSS sybmbol set Sep2013
+text en "point passage-height:both" "air space, water depth" # suggestion for future 5.3.12 adding to en-nz/NZSS sybmbol set Sep2013
+text en "point narrow-end"       "passage end, narrow"
+text en "point low-end"          "passage end, low"
+text en "point blocks"           "blocks, breakdown"
+text en "line wall:blocks"       "blocks, breakdown"
+text en "area blocks"            "blocks, breakdown"
+text en "point vegetable-debris"       "plant matter"
+text en "point sand"             "sand, silt"
+text en "line wall:sand"         "sand, silt"
+text en "area sand"              "sand, silt"
+text en "point clay"             "mud"
+text en "point passage-height"   "passage height (m)"
+text en "line wall:clay"         "mud"
+text en "area clay"              "mud"
+text en "line u:doline"          "doline"
+text en "line border:visible"     ""
+text en "line border:temporary"   ""
+text en "line border:presumed"    ""
+text en "line rock-edge"          ""
+text en "line survey" ""
+#text en "point u:man_w" "caver (walking)"   By default don't include legend text for this
+#text en "point u:man_c" "caver (climbing)"   By default don't include legend text for this

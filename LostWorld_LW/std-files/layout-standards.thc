@@ -1,0 +1,490 @@
+encoding  utf-8
+
+#FILENAME: layout-standards.thc
+# Paul Rowe - standard layout options
+# 7 Aug 2023
+#
+# Revision history
+# 16 Aug 2023 - override l_chimney_NZSS to use larger dots, added tab formatting
+
+layout layout-standards
+	language en_UK  # English, UK only changes line pit to pitch (from pit), more like NZ usage
+
+	#PAGE LAYOUT
+	rotate  00           # map orientation on page
+	legend on
+	scale 1 200
+	north true
+	page-setup 21 29.7 18 26.7 1.5 1.5 cm
+	
+	#CAVE APPEARANCE
+	symbol-set NZSS
+
+	#Adopt passage slope 'fat triangle arrows' in favour of default skinny arrows
+	symbol-assign line gradient BCRA
+	symbol-assign point gradient BCRA
+	
+	symbol-assign area debris AUT   
+	symbol-assign line wall:debris AUT  #uncomment remove when snapshot 5.3.9? fixes line wall AUT#  
+	symbol-assign point debris AUT  
+  
+    symbol-assign line wall:blocks AUT  
+	symbol-assign point blocks AUT
+
+	symbol-assign point pebbles AUT
+	symbol-assign area pebbles AUT
+
+	# Symbol colours
+  
+	symbol-color point anchor [65 10 10]
+	symbol-color point breakdown-choke [13 14 30]
+	symbol-color point stalagmite [40 28 0]
+	symbol-color point stalactite [40 28 0]
+	symbol-color point stalactites [40 28 0]
+	symbol-color point stalagmites [40 28 0]
+	symbol-color point soda-straw [40 28 0]
+	symbol-color point u:plant [30 48 28]
+#	symbol-color line border [28 13 12] # leave border black and primarily use these for area outlines
+	symbol-color line chimney [13 14 30]
+	symbol-color line floor-step [28 13 12]
+	symbol-color line floor-meander [28 13 12]
+	symbol-color line pitch [28 13 12]
+	symbol-color line rock-border [28 13 12]
+	symbol-color line rope [65 10 10]
+	symbol-color line slope [68 29 27]
+	symbol-color line u:contour [30 48 28]
+	symbol-color line u:doline [28 13 12]
+	symbol-color line u:wooden_steps [34 19 18]
+	symbol-color line u:track [34 19 18]
+	symbol-color line u:track_overlying [34 19 18]
+	symbol-color line wall [13 14 30]
+	symbol-color line wall:blocks [13 14 30]
+	symbol-color line wall:debris [13 14 30]
+	symbol-color line water-flow [12 50 92]
+	symbol-color area blocks [34 19 18]
+	symbol-color area clay [34 19 18]
+	symbol-color area debris [34 19 18]
+	symbol-color area flowstone [40 28 0]
+	symbol-color area pebbles [34 19 18]
+	symbol-color area sand [34 19 18]
+	symbol-color area sump [12 50 92]
+	symbol-color area u:plants [30 48 28]
+	symbol-color area u:parataniwha [30 48 28]
+	symbol-color area water [12 50 92]
+	
+	symbol-assign line slope BCRA
+	
+	color map-fg [98 94 91]
+	opacity 85
+
+
+	code metapost
+		%Bruce Mutton 2012.06.10 uses general code for l_pit_UIS defined in therion source code by Martin Budaj 5.3.9
+		% dots on righthand (rock) side of line spaced 0.2u, 0.2u same as floor-step ticks
+		%Paul Rowe - modified to use thickest pen for dots to make them more visible
+		def l_chimney_NZSS (expr P) =
+			T:=identity;
+			cas := 0;                            % cursor to step along path
+			dlzka := arclength P;
+			mojkrok:=adjust_step(dlzka, 0.25u);  % symbol length nudged to be multiple of path length
+			q:= (0.20u,-0.20u) -- (0.21u,-0.21u);         % dot
+
+			pickup PenA;  %thickest pen
+			forever:
+			  t := arctime cas of P;
+			thdraw q rotated angle(thdir(P,t)) shifted (point t of P ); % draw dots
+			cas := cas + mojkrok;
+			  exitif cas > dlzka + (mojkrok / 3); % for rounding errors
+			endfor;
+			pickup PenB;   %2nd thickest pen
+			thdraw P;      %continuous line
+		enddef;
+
+		%Bruce Mutton 2010.06.20 for Therion 5.3.8
+		def l_wall_unsurveyed (expr P) = 
+			T:=identity;
+			pickup PenC;
+			thdraw P dashed evenly scaled (2*optical_zoom);
+		enddef;
+		
+		# Paul Rowe 2023.08.19   Modified version of 'North Arrow 2' from Thomas Holder. Distributed under the GNU General Public License.
+		# Paul Rowe - 2023.12.06 Hidden 'true' text as this map is rotated 90 degrees. Add separate label point on map for this.
+		def s_northarrow (expr rot) =
+			begingroup
+				interim defaultscale:=0.7; % scale your north arrow here
+				T:=identity scaled defaultscale rotated -rot;
+				interim linecap:=squared;
+				interim linejoin:=rounded;
+				thfill (-.5cm,-.1cm)--(0,2.8cm)--(.5cm,-.1cm)--cycle;
+				pickup pencircle scaled (0.08cm * defaultscale);
+				thdraw (0,0)--(0,-2.5cm);
+				pickup pencircle scaled (0.16cm * defaultscale);
+				p:=(0.4cm,0.6cm);
+				thdraw ((p--(p yscaled -1)--(p xscaled -1)--(p scaled -1)) shifted (0,-1.4cm));
+				label.rt(thTEX(" ") scaled 1.6, (0.7cm,-1.9cm)) transformed T;
+			endgroup;
+		enddef;
+		
+		# Custom points for person walking / climbing. From Juraj Halama.
+		picture u_man_c_pic;
+		u_man_c_pic := image (
+			draw (0cm, -0cm) -- (-8cm, 27cm) -- (-36cm, 55cm) -- (-50cm, 99cm) withpen pencircle scaled 16cm;
+			draw (27cm, 48cm) -- (0, 64cm) -- (-29cm, 61cm) -- (-38cm, 102cm)  withpen pencircle scaled 16cm;
+			draw (-65cm, 48cm) -- (-75cm, 75cm) -- (-53cm, 106cm) -- (0, 106cm) withpen pencircle scaled 14cm;
+			draw (-44cm, 130cm) withpen pencircle scaled 27cm withcolor black;
+		) shifted (20cm, -67cm);
+
+		picture u_man_w_pic;
+			u_man_w_pic := image (
+			draw (0, 0) -- (7.5cm, 36cm) -- (0cm, 69cm) -- (9cm, 99cm) withpen pencircle scaled 16cm;
+			draw (42cm, 9cm) -- (37.5cm, 42cm) -- (13.5cm, 69cm) -- (30cm, 102cm) withpen pencircle scaled 16cm;
+			draw (21.5cm, 100.5cm) -- (6.6cm, 69cm) withpen pencircle scaled 16cm;
+			draw (-24cm, 75cm) -- (-13.5cm, 102cm) -- (9cm, 112.5cm) -- (30cm, 108cm) -- (51cm, 87cm) -- (75cm, 93cm) withpen pencircle scaled 14cm;
+			draw (30cm, 132cm) withpen pencircle scaled 27cm withcolor black;
+		) shifted (-20cm, -70cm);
+		
+		# Custom points for person standing. Paul Rowe, 2024.01.03. Extended from Juraj Halama.
+		picture u_man_standing_pic;
+			u_man_standing_pic := image (
+			#right torso right leg
+			draw (2cm, 0) -- (3cm, 32cm) -- (6cm, 69cm) -- (4cm, 99cm) withpen pencircle scaled 16cm;
+			#left torso left leg
+			draw (26cm, 0) -- (25cm, 36cm) -- (22cm, 69cm) -- (24cm, 99cm) withpen pencircle scaled 16cm;
+			# body
+			draw (15cm, 105cm) -- (15cm, 58cm) withpen pencircle scaled 16cm;
+			# arms 
+			draw (-18cm, 75cm) -- (-6.5cm, 102cm) -- (5cm, 112.5cm) -- (23cm, 112.5cm) -- (33cm, 102cm) -- (45.5cm, 75cm) withpen pencircle scaled 14cm;
+			#head
+			draw (15cm, 132cm) withpen pencircle scaled 27cm withcolor black;
+		) shifted (-20cm, -70cm);
+
+		def p_u_man_standing (expr P, R, S, A) =
+			U := (60cm, 80cm) scaled (0.01 / Scale);
+			T:=identity aligned A rotated R scaled S shifted P;
+			thdraw u_man_standing_pic scaled (0.01 / Scale);
+		enddef;
+		
+		def p_u_man_c (expr P, R, S, A) =
+			U := (60cm, 85cm) scaled (0.01 / Scale);
+			T:=identity aligned A rotated R scaled S shifted P;
+			thdraw u_man_c_pic scaled (0.01 / Scale);
+		enddef;
+
+		def p_u_man_c_reverse (expr P, R, S, A) =
+			U := (60cm, 85cm) scaled (0.01 / Scale);
+			T:=identity aligned A rotated R scaled S shifted P;
+			thdraw u_man_c_pic reflectedabout (origin,(0,u)) scaled (0.01 / Scale);
+		enddef;
+		
+		def p_u_man_w (expr P, R, S, A) =
+			U := (60cm, 80cm) scaled (0.01 / Scale);
+			T:=identity aligned A rotated R scaled S shifted P;
+			thdraw u_man_w_pic scaled (0.01 / Scale);
+		enddef;
+
+		def p_u_man_c_legend =
+			draw u_man_c_pic scaled (u / 175cm) shifted ((.5, .5) inscale);
+		enddef;
+
+		def p_u_man_w_legend =
+			draw u_man_w_pic scaled (u / 175cm) shifted ((.5, .5) inscale);
+		enddef;
+
+		# Surface contour line. Dashed line, coloured in layout. Paul Rowe. 2024.01.04.
+		def l_u_contour (expr P) =
+			T:=identity;
+			pickup PenA;
+			thdraw P dashed evenly scaled optical_zoom;
+		enddef;
+
+		# Custom line for tracks. Paul Rowe, 2023.12.23. Change colour in layout. Use "-clip off" when the track is outside of the cave boundaries.
+		def l_u_track (expr P) =
+			T:=identity;
+			pickup PenB;
+			thdraw P dashed evenly scaled (2*optical_zoom);
+		enddef;
+
+		# Just use a plain bezier curve for rope, mark anchors separately. Paul Rowe, 2023.12.28. 
+		def l_rope (expr P, show_anchors, show_rebelays) =
+			T:=identity;
+			pickup PenB;
+			thdraw P;
+		enddef;
+
+		# Lighter light to indicate overlying track. Paul Rowe, 2023.12.23. 
+		def l_u_track_overlying (expr P) =
+			T:=identity;
+			pickup PenD;
+			thdraw P dashed evenly scaled (2*optical_zoom);
+		enddef;
+		
+		# Custom doline outline. From Dave Clucas, 2014.
+		def l_u_doline (expr P) =
+			T:=identity;
+			laenge:= arclength P;
+			symsize:=adjust_step(laenge,2u);
+			triangle_width:=symsize/10;
+			cur:=(symsize-triangle_width)/2;
+			pickup PenC;
+			forever:
+				t1 := arctime (cur) of P;
+				t  := arctime (cur + triangle_width/2) of P;
+				t2 := arctime (cur + triangle_width) of P;
+				thfill (subpath (t1,t2) of P) -- 
+				((point t of P) + symsize/2 * unitvector(thdir(P,t) rotated 90)) -- 
+				cycle;
+				thdraw (point t2 of P) --((point t of P) + symsize/2 * unitvector(thdir(P,t) rotated 90)) -- 
+				(point t1 of P) withcolor (0.5, 0, 0);
+				cur := cur + symsize;
+			exitif cur > laenge - (1*symsize/3); % for rounding errors
+				t1:=arctime (cur) of P;
+			endfor;
+		enddef;
+		
+		# Paul Rowe 2023.12.24
+		def p_u_plant (expr pos,theta,sc,al)=
+			U:=(.2u,u);
+			T:=identity aligned al rotated theta scaled 1 shifted pos;
+			pickup PenC;
+			thdraw (0,1.2u)--(0,0.4u);
+	
+			p:= (0,(1-0.15)*u)--(.2u,u);
+			thdraw p;
+			thdraw p reflectedabout (origin,(0,u));
+			p:= (0,(1-0.3)*u)--(.3u,0.8*u);
+			thdraw p;
+			thdraw p reflectedabout (origin,(0,u));
+			p:= (0,(1-0.45)*u)--(.4u,0.6*u);
+			thdraw p;
+			thdraw p reflectedabout (origin,(0,u));
+		enddef;
+		
+		# Paul Rowe 2023.12.24
+		def a_u_plants (expr P) =
+			T:=identity;
+			U:=(.2u,u);
+			pickup PenC;
+			path q; q = bbox P;
+			picture tmp_pic, tmp_sn;
+			pair z;
+			tmp_sn := image(
+
+				pickup PenC;
+				thdraw (0,1.2u)--(0,0.4u);
+	
+				p:= (0,(1-0.15)*u)--(.2u,u);
+				thdraw p;
+				thdraw p reflectedabout (origin,(0,u));
+				p:= (0,(1-0.3)*u)--(.3u,0.8*u);
+				thdraw p;
+				thdraw p reflectedabout (origin,(0,u));
+				p:= (0,(1-0.45)*u)--(.4u,0.6*u);
+				thdraw p;
+				thdraw p reflectedabout (origin,(0,u));
+			);
+			
+			tmp_pic := image(
+				for i = xpart llcorner q step 2u until xpart urcorner q:
+					for j = ypart llcorner q step 2u until ypart urcorner q:
+						z:=((i,j) randomized 0.3u );
+						if xpart (P intersectiontimes ((bbox tmp_sn) shifted z)) < 0:
+						draw tmp_sn shifted z
+						fi;
+					endfor;
+				endfor;
+			);
+			clip tmp_pic to P;
+			drawoptions();
+			draw tmp_pic;
+  
+		enddef;
+
+		# Paul Rowe 2023.12.24
+		def a_u_parataniwha (expr P) =
+			T:=identity;
+			U:=(.2u,u);
+			pickup PenC;
+			path q; q = bbox P;
+			picture tmp_pic, tmp_sn;
+			pair z;
+			tmp_sn := image(
+
+				pickup PenC;
+				thdraw (0,1.2u)--(0,0.4u);
+	
+				p:= (0,(1-0.2)*u)--(.3u,u);
+				thdraw p;
+				thdraw p reflectedabout (origin,(0,u));
+				p:= (0,(1-0.35)*u)--(.4u,0.8*u);
+				thdraw p;
+				thdraw p reflectedabout (origin,(0,u));
+				p:= (0,(1-0.5)*u)--(.3u,0.6*u);
+				thdraw p;
+				thdraw p reflectedabout (origin,(0,u));
+			);
+			
+			tmp_pic := image(
+				# include a cluster in the corner so that the legend works
+				z:=(1.2u,0.6u);
+				draw (tmp_sn rotated ((uniformdeviate 180)-90) ) shifted z;
+				z:=(1u,0.7u);
+				draw (tmp_sn rotated ((uniformdeviate 180)-90) ) shifted z;
+				z:=(1u,0.1u);
+				draw (tmp_sn rotated ((uniformdeviate 180)-90) ) shifted z;
+				for i = xpart llcorner q step 2.1u until xpart urcorner q:
+					for j = ypart llcorner q step 2.1u until ypart urcorner q:
+						z:=(i,j);
+						if xpart (P intersectiontimes ((bbox tmp_sn) shifted z)) < 0:
+						draw (tmp_sn rotated ((uniformdeviate 180)-90) ) shifted z
+						fi;
+					endfor;
+				endfor;
+			);
+			clip tmp_pic to P;
+			drawoptions();
+			draw tmp_pic;
+  
+		enddef;
+		
+		# Paul Rowe 2023.12.27 - use line pit, but with standard wall thickness and thicker ticks for entrance pitches
+		def l_wall_pit (expr P) =
+			T:=identity;
+			cas := 0;
+			dlzka := arclength P;
+			mojkrok:=adjust_step(dlzka, 0.35u);
+			pickup PenB;
+			forever:
+				t := arctime cas of P;
+				mark_ (P,t,0.3u);
+				cas := cas + mojkrok;
+			exitif cas > dlzka + (mojkrok / 3); % for rounding errors
+			endfor;
+			pickup PenA;
+			thdraw P;
+		enddef;
+
+		# Custom steps, based on plank walk line from Dave Clucas, 2014.
+		def l_u_metal_steps  (expr P) = T:=identity;
+			cas := 0;
+			dlzka := arclength P;
+			mojrok := adjust_step(dlzka, 0.5u);
+			pickup PenB;
+			forever:
+				t := arctime cas of P;
+				thdraw ((point t of P) + 0.3 * u * unitvector(thdir(P,t) rotated 90)) --
+				((point t of P) - 0.3 * u * unitvector(thdir(P,t) rotated 90) );
+				cas := cas + mojrok;
+				exitif cas > dlzka + (mojrok/3);  % for rounding errors
+			endfor;
+			pickup PenC;
+			%thdraw P; 
+			%draw path withcolor (0.5, 0 ,0)
+		enddef;
+
+		# Custom steps, based on plank walk line from Dave Clucas, 2014. Change color in layout file.
+		def l_u_wooden_steps  (expr P) = T:=identity;
+			cas := 0;
+			dlzka := arclength P;
+			mojrok := adjust_step(dlzka, 0.5u);
+			pickup PenB;
+			forever:
+				t := arctime cas of P;
+				thdraw ((point t of P) + 0.3 * u * unitvector(thdir(P,t) rotated 90)) --
+				((point t of P) - 0.3 * u * unitvector(thdir(P,t) rotated 90) );
+				cas := cas + mojrok;
+				exitif cas > dlzka + (mojrok/3);  % for rounding errors
+			endfor;
+			pickup PenC;
+			%thdraw P; 
+			%draw path withcolor (0.5, 0 ,0)
+		enddef;
+	endcode
+
+endlayout layout-standards
+
+
+#CODE TO PUT BORDER AROUND MAP
+#-----------------------------
+layout layout-map-border
+	code tex-map
+		\framethickness=0.25mm
+		
+endlayout layout-map-border
+
+#CODE TO MAKE WATER LOOK BLUE
+#----------------------------
+#remove this layout in due course RBM 2011.06.24
+
+layout water-blue  # Make water look blue
+	code metapost
+		def a_water (expr p) =
+			T:=identity;
+			thfill p withcolor (0.86, 1.0, 1.0);  
+		enddef;
+	endcode  
+endlayout water-blue
+
+#CODE TO MAKE SUMP LOOK BLUE
+#----------------------------
+#remove this layout in due course RBM 2011.06.24
+layout sump-blue  # Make sump look blue
+	code metapost
+		def a_sump (expr p) =
+		T:=identity;
+		thfill p withcolor (0.22, 0.22, 0.95);
+	enddef;
+	endcode  
+endlayout sump-blue
+
+
+#REDINFED BUILT-IN PHRASES - original source Bruce Mutton
+#5.3.10# text en "point no-equipment"     "no equipment"
+#5.3.10# ext en "point raft"             "calcite raft"
+text en "point water"            "water, small pool"
+#5.3.10# text en "point water-flow:paleo" "paleo water flow (scallops)"
+text en "point paleo-material"   "paleo material, bones"
+text en "point archeo-material"  "archaeological material"
+#5.3.10# text en "point height"           "floor step/chimney/pit height/depth"
+#5.3.10# text en "point height:unsigned"  "floor step height"
+#5.3.10# text en "point clay-choke"       "clay/mud choke"
+#5.3.10# text en "point passage-height:both" "height above, depth below water"
+
+text en "point passage-height:unsigned" "passage height" # suggestion for future 5.3.12 adding to en-nz/NZSS sybmbol set Sep2013 (matches current default)
+text en "point passage-height:negative" "water depth" # suggestion for future 5.3.12 adding to en-nz/NZSS sybmbol set Sep2013
+text en "point passage-height:positive" "air space" # suggestion for future 5.3.12 adding to en-nz/NZSS sybmbol set Sep2013
+text en "point passage-height:both" "air space, water depth" # suggestion for future 5.3.12 adding to en-nz/NZSS sybmbol set Sep2013
+text en "point narrow-end"       "passage end, narrow"
+text en "point low-end"          "passage end, low"
+text en "point blocks"           "blocks, breakdown"
+text en "point u:plant"          "plant"
+text en "point vegetable-debris" "plant matter"
+text en "point sand"             "sand, silt"
+text en "point clay"             "mud"
+text en "point passage-height"   "passage height (m)"
+#text en "point u:man_w" "caver (walking)"           By default don't include legend text for this
+#text en "point u:man_c" "caver (climbing)"          By default don't include legend text for this
+#text en "point u:man_c_reverse" "caver (climbing)"  By default don't include legend text for this
+#text en "point u:man_standing" "caver (standing)"   By default don't include legend text for this
+
+text en "line border:visible"     ""
+text en "line border:temporary"   ""
+text en "line border:presumed"    ""
+text en "line u:doline"          "doline"
+text en "line u:metal_steps"     "metal steps"
+text en "line u:track"           "track"
+text en "line u:track_overlying" "track (overlying)"
+text en "line u:user"            ""
+text en "line u:wooden_steps"    "wooden steps"
+text en "line wall:blocks"       "blocks, breakdown"
+text en "line wall:sand"         "sand, silt"
+text en "line wall:clay"         "mud"
+text en "line rock-edge"          ""
+text en "line survey" ""
+#5.3.10# text en "line arrow"             ""   #no point in labelling these
+#5.3.10# text en "line ceiling-step"      "ceiling step"
+
+text en "area clay"              "mud"
+text en "area sand"              "sand, silt"
+text en "area blocks"            "blocks, breakdown"
+text en "area u:parataniwha"     "parataniwha"
+text en "area u:plants"          "plants"

@@ -1,0 +1,21 @@
+Mangapū System
+The Mangapū cave system forms part of the upper catchment of the Mangapū River, with the name translating to "double stream" (manga - river branch, pū - double). The name also refers to the river's disappearance and re-emergence.
+
+Mangapū: double stream / a submergence and a re-emergence
+
+Fonts
+Serif: Black Chancery
+Typewriter: Lucida Console
+
+History
+1987 - Nick Andreef establishes tourist trips through Lost World section of cave.
+
+To do
+Split elev data into sub-files
+Grid lines
+Test custom 'tree' point
+Create custom thick line for surface outlines on elev view
+Set map rotation
+Set depth colour gradient
+
+Translations into Maori

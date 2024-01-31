@@ -1,0 +1,9 @@
+survey lw -title "The Lost World, Mangapu System"
+
+   input survey-surface-lw.th
+   
+endsurvey
+
+map m-upper
+	lw-plan-lost-world-pitch-head-1
+endmap

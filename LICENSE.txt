@@ -1,0 +1,22 @@
+Copyright (c) 1949-2024 New Zealand Speleological Society
+
+This data and the representations it creates (output lists, maps, models) are held on behalf of NZSS and are NOT to be released into the public domain without the express permission of the NZSS Council.  It is available for use by NZSS members only.  Copyright rests with the authors and with NZSS.  Please respect this by not providing access or copies to non-NZSS members or to people who have not been given access by the project custodian(s).
+The data may include derivatives of code from supporting software that modifies the behaviour of that software. In these circumstances the licensing applicable to that software follows and applies to the derivatives of that code.
+For example Therion and Survex are distributed under General Public License https://www.gnu.org/licenses/gpl-3.0.html  (Wikipedia https://en.wikipedia.org/wiki/GNU_General_Public_License) 
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the dataset.  Copyright to NZSS shall be included in all outputs, where the format permits.
+The data is provided "as is", without warranty of any kind, express or implied.
+Contact http://caves.org.nz/ 
+
+Permissions
+No commercial use
+Modification OK
+Limited Distribution:      Within NZSS as approved by project custodian(s)
+                           Outside NZSS as approved on case by case basis by NZSS Council
+Private use within NZSS membership
+
+Limitations
+No Liability
+No warranty
+
+Conditions
+Copyright notice

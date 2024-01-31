@@ -1,0 +1,145 @@
+encoding  utf-8
+##XTHERION## xth_me_area_adjust -325.0 -132.0 2581.0 2579.0
+##XTHERION## xth_me_area_zoom_to 100
+##XTHERION## xth_me_image_insert {275.736 1 4.466835921509632} {1827.478 1@man-overland} sketches/mangapu.xvi 0 {}
+
+
+
+scrap man-a-plan-1 -projection plan -scale [-128.0 -128.0 3553.1987 -128.0 0.0 0.0 93.50244697999999 0.0 m]
+
+line wall -subtype overlying
+  99.0 1781.0
+  99.0 1781.0 122.5 1785.0 129.0 1778.0
+  136.85 1769.54 138.0 1763.0 133.0 1754.0
+  123.37 1736.66 95.0 1753.0 95.0 1753.0
+  smooth off
+endline
+
+point 1715.0 804.5 label -text "BCRA Grade 5C.<br>Surveyed by Pete Smith & Karl Burt, 2018. <br>Drafted by Paul Rowe, 2023." -scale 1.5 -align right
+
+line wall -close on -subtype overlying
+  258.0 1825.0
+  258.0 1825.0 275.0 1832.0 285.0 1830.5
+  298.95 1828.41 297.5 1806.5 278.5 1806.5
+  261.53 1806.5 258.0 1817.0 258.0 1825.0
+  258.0 1833.0 258.0 1825.0 258.0 1825.0
+  smooth off
+endline
+
+line border -id l40-646-1867 -close on -visibility off
+  313.5 1846.0
+  313.5 1846.0 303.5 1763.0 308.0 1758.5
+  312.5 1754.0 677.5 1695.0 687.0 1685.0
+  696.5 1675.0 891.5 1574.0 891.5 1574.0
+  smooth off
+  891.5 1574.0 1170.5 1412.5 1179.0 1412.5
+  1187.5 1412.5 1423.0 1329.0 1423.0 1329.0
+  smooth off
+  1466.0 1423.5
+  1238.0 1577.0
+  1097.0 1719.5
+  882.5 1812.5
+  710.0 1911.0
+  396.0 1850.0
+  313.5 1846.0
+endline
+
+area clay
+  l38-295-1843
+endarea
+
+line border -id l38-295-1843 -close on -visibility off
+  293.5 1848.0
+  293.5 1848.0 319.5 1781.0 298.5 1772.0
+  277.5 1763.0 101.0 1688.0 91.5 1707.5
+  82.0 1727.0 82.5 1800.5 106.5 1809.5
+  130.5 1818.5 262.0 1853.0 273.0 1850.5
+  284.0 1848.0 293.5 1848.0 293.5 1848.0
+  smooth off
+endline
+
+point -56.0 1409.0 label -text "Cross sections, looking east along passage" -align right -scale 1.5
+
+line wall
+  1390.0 1364.0
+  1376.6 1377.91 1332.85 1403.18 1314.0 1416.0
+  1289.0 1433.0 1238.0 1432.0 1202.0 1442.0
+  1187.34 1446.07 1071.0 1521.0 1003.0 1561.0
+  935.0 1601.0 944.0 1595.0 903.0 1619.0
+  862.0 1643.0 829.08 1632.04 782.0 1665.0
+  752.0 1686.0 748.0 1698.0 728.0 1708.0
+  708.0 1718.0 697.34 1734.12 661.0 1721.0
+  637.71 1712.59 428.0 1745.0 428.0 1745.0
+  smooth off
+  428.0 1745.0 354.6 1776.79 334.0 1777.0
+  285.5 1777.5 230.0 1804.0 180.0 1773.0
+  162.79 1762.33 164.77 1739.66 131.0 1735.0
+  73.0 1727.0 27.0 1794.0 2.0 1815.0
+  smooth off
+endline
+
+point 1686.0 1970.5 label -text "Length: 40m, Depth: 5m" -scale 2 -align right
+
+line wall
+  19.0 1851.0
+  19.0 1851.0 56.83 1799.2 99.0 1790.5
+  130.5 1784.0 114.0 1803.0 142.0 1811.0
+  170.0 1819.0 213.0 1837.0 231.0 1837.0
+  249.0 1837.0 301.18 1841.52 344.0 1832.0
+  380.0 1824.0 484.0 1836.0 524.0 1851.0
+  549.2 1860.45 624.0 1890.0 686.0 1873.0
+  712.61 1865.7 752.06 1839.19 757.0 1838.0
+  786.0 1831.0 821.0 1835.0 876.0 1813.0
+  907.69 1800.32 926.0 1742.0 950.0 1726.0
+  974.0 1710.0 1008.0 1699.0 1070.0 1651.0
+  1132.0 1603.0 1172.0 1546.0 1236.0 1517.0
+  1289.43 1492.79 1322.0 1480.0 1330.0 1474.0
+  1338.0 1468.0 1407.0 1427.0 1428.0 1399.0
+  smooth off
+endline
+
+point 276.27 1828.4500000000003 station -name 2@man-overland -visibility off
+
+point 2514.0 920.0 label -text " "
+
+area debris
+  l40-646-1867
+endarea
+
+line gradient
+  321.0 1815.0
+  419.0 1787.0
+endline
+
+line gradient
+  166.0 1804.0
+  244.0 1808.0
+endline
+
+point -92.0 2215.0 label -text "<rm>Waitomo" -align right -scale 2.5
+
+point -104.0 2340.0 label -text "<rm>Mangapū System" -align right -scale 4
+
+point -192.0 2154.0 label -text " " -align right -scale 1.5
+
+point -78.0 1912.0 label -text "too<br>tight" -align right -scale 1.5
+
+point 17.476 1821.578 station -name 1@man-overland
+
+point -43.0 960 label -text "Elevation View, projection 0 degrees " -align right -scale 2
+
+point -83.0 2056.0 label -text "Plan View" -align right -scale 2
+
+point 101.5 1620.5 label -text "Entrances" -align right -scale 2
+
+point 2.0 2446.0 label -text " " -align right -scale 1.5
+
+point 1478.0 1335.0 label -text "too tight" -align right -scale 1.5
+
+point 1498.0 1456.0 passage-height -value [0.3 metres] -scale 1.5
+
+
+endscrap
+
+
+

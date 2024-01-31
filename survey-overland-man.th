@@ -1,0 +1,71 @@
+encoding  iso8859-2
+survey man-overland -title "survey-overland-man" -entrance 1
+
+# Mangapū System, Waitomo
+# Overland route converted from lat/long points + altitude into distance, compass, clino.
+    
+  centreline
+    
+    date 2023.9.24
+    team "Paul Rowe"
+    
+# Lat / long position for entrance
+   cs lat-long
+   fix 1  -38.363471 175.062403 152
+   fix 29 -38.343713 175.088747 61
+
+   declination 0 degrees
+
+   units compass clino degrees
+
+# Survey station notes
+# Station 1 Submergence
+# Station 2A Nemesis entrance
+# Station 6 = Spider Hole
+# Station 8 = Lost World winch / rope anchor point
+# Station 8A = Lost World tomo mid-point
+# Station12 = Auckland Hole
+# Station16 = Hamland Hole
+# Station 20 = Hamilton Hole
+# Station 25 = Wellington Hole
+# Station 29 = Resurgence
+	
+data normal from to length compass clino 
+
+flags surface
+1	2	79.11	21.28	20.73
+2	2A	118.02	31.4	4.86
+2	3	236.41	16.43	7.29
+3	4	145.08	8.44	-5.93
+4	5	160.71	36.21	3.57
+5	6	124.08	37.25	-13.99
+6	7	216.26	43.77	1.32
+7	8	142.39	45.4	-6.05
+8	9	45.43	7.83	19.28
+8	8A	28.05	258.09	32.33
+9	10	137.30	53.82	10.49
+10	11	108.03	42.86	-13.38
+11	12	48.43	36.86	-11.92
+12	13	7.99	92.58	21.97
+13	14	196.33	42.81	-5.26
+14	15	177.97	30.19	1.61
+15	16	106.28	52.53	-13.60
+16	17	109.77	38.88	14.24
+17	18	71.12	68.31	-9.71
+18	19	149.73	70.3	3.83
+19	20	37.49	74.2	-25.27
+20	21	35.62	68.25	9.70
+21	22	31.38	56.05	-22.49
+22	23	55.38	55.48	7.26
+23	24	151.77	51.49	-9.48
+24	25	39.75	50.25	-10.14
+25	26	28.58	72.48	14.18
+26	27	167.73	59.48	1.02
+27	28	225.58	73.83	-5.85
+28	29	96.28	67.26	-23.89
+
+flags not surface
+1	2T	15.00	20.0	-1
+  endcentreline
+  
+endsurvey man-overland
